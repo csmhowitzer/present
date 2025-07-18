@@ -1,0 +1,286 @@
+*present.txt*    Minimalist presentation plugin for Neovim
+
+Author: present.nvim
+License: MIT
+
+                                    *present* *present.nvim* *present-plugin*
+
+==============================================================================
+CONTENTS                                                    *present-contents*
+
+1. Introduction ............................ |present-introduction|
+2. Installation ............................ |present-installation|
+3. Configuration ........................... |present-configuration|
+4. Commands ................................ |present-commands|
+5. Functions ............................... |present-functions|
+6. Navigation .............................. |present-navigation|
+7. Markdown Format ......................... |present-markdown|
+8. Window Layout ........................... |present-windows|
+9. Examples ................................ |present-examples|
+10. Troubleshooting ........................ |present-troubleshooting|
+
+==============================================================================
+1. INTRODUCTION                                         *present-introduction*
+                                                        *present-features*
+
+present.nvim is a minimalist presentation plugin for Neovim that transforms
+markdown files into beautiful, distraction-free slide presentations.
+
+Features:
+- Markdown-based presentations with familiar syntax
+- Minimalist design with clean floating windows
+- Responsive layout that adapts to screen sizes
+- Lightweight with focused functionality
+- Single command to start presenting
+- Comprehensive test suite with 28+ tests
+
+==============================================================================
+2. INSTALLATION                                        *present-installation*
+
+Using lazy.nvim:
+
+>lua
+    {
+      dir = "~/plugins/present.nvim",
+      name = "present",
+      build = ":helptags doc",
+      config = function()
+        require("present").setup()
+      end,
+    }
+<
+
+Using packer.nvim:
+
+>lua
+    use {
+      "your-username/present.nvim",
+      config = function()
+        require("present").setup()
+      end,
+    }
+<
+
+Using vim-plug:
+
+>vim
+    Plug 'your-username/present.nvim'
+<
+
+Then add to your init.lua:
+
+>lua
+    require("present").setup()
+<
+
+==============================================================================
+3. CONFIGURATION                                       *present-configuration*
+
+present.nvim works out of the box with minimal configuration needed.
+
+Setup function:
+
+>lua
+    require("present").setup()
+<
+
+The setup function is currently minimal.
+
+==============================================================================
+4. COMMANDS                                                 *present-commands*
+
+                                                            *:PresentStart*
+:PresentStart           Start presentation from current buffer
+
+The presentation will parse the current markdown buffer and display it
+in floating windows with navigation controls.
+
+==============================================================================
+5. FUNCTIONS                                               *present-functions*
+
+present.start_presentation({opts})                *present.start_presentation()*
+    Start a presentation from a markdown buffer.
+
+    Parameters: ~
+        {opts} (table|nil) Configuration options:
+            • bufnr (number|nil): Buffer number to create presentation from
+                                 (default: current buffer)
+
+    Usage: ~
+>lua
+        -- Start presentation from current buffer
+        require("present").start_presentation()
+        
+        -- Start presentation from specific buffer
+        require("present").start_presentation({ bufnr = 42 })
+<
+
+present.setup()                                              *present.setup()*
+    Setup function for present.nvim. Currently minimal setup.
+
+    Usage: ~
+>lua
+        require("present").setup()
+<
+
+==============================================================================
+6. NAVIGATION                                             *present-navigation*
+                                                          *present-keys* *present-keymaps*
+
+Once in presentation mode, use these keys to navigate:
+
+Key     Action ~
+n       Next slide                                        *present-next*
+p       Previous slide                                    *present-previous*
+q       Quit presentation                                 *present-quit*
+
+Navigation is only available when the presentation body window is focused.
+The presentation automatically handles window focus and cleanup.
+
+==============================================================================
+7. MARKDOWN FORMAT                                         *present-markdown*
+                                                           *present-slides* *present-format*
+
+Presentations use standard markdown syntax with specific formatting rules:
+
+Slide Separation: ~                                       *present-headers*
+Use `#` headers at the beginning of lines to separate slides:
+
+>markdown
+    # First Slide Title
+    
+    This is the content of the first slide.
+    You can have multiple lines of content.
+    
+    # Second Slide Title
+    
+    - Bullet points work great
+    - For listing key points
+    - And organizing information
+<
+
+Content Rules: ~                                             *present-content*
+- Each `#` header creates a new slide
+- Content between headers becomes the slide body
+- All markdown elements are displayed as-is
+- Empty lines are preserved for formatting
+
+==============================================================================
+8. WINDOW LAYOUT                                            *present-windows*
+                                                            *present-floating* *present-layout*
+
+The presentation creates a layered floating window system:
+
+Window Types: ~                                            *present-window-types*
+- Background window: Full-screen backdrop (zindex: 10)
+- Header window: Displays slide titles with rounded borders (zindex: 20)
+- Body window: Shows slide content with margins (zindex: 21)
+- Footer window: Bottom status with slide count and filename (zindex: 22)
+
+Layout Features: ~                                           *present-responsive*
+- Automatically adapts to terminal dimensions
+- Responsive design handles window resizing
+- VimResized autocmd updates layout dynamically
+- Proper z-index layering for visual hierarchy
+
+Window Positioning: ~                                      *present-positioning*
+- Header: Full width at top with rounded border
+- Body: Centered with 8-character left margin
+- Footer: Full width at bottom with slide counter
+- Background: Full screen for distraction-free viewing
+
+==============================================================================
+9. EXAMPLES                                                 *present-examples*
+
+Simple Presentation: ~
+
+>markdown
+    # Welcome to My Presentation
+    
+    This is the opening slide with introductory content.
+    
+    # Key Points
+    
+    - Point one: Important information
+    - Point two: More details  
+    - Point three: Conclusion
+    
+    # Thank You
+    
+    Questions and discussion time!
+<
+
+Meeting Notes Presentation: ~
+
+>markdown
+    # Meeting Agenda
+    
+    - Review last week's progress
+    - Discuss current challenges
+    - Plan next steps
+    
+    # Progress Update
+    
+    Completed tasks:
+    - Feature implementation
+    - Bug fixes
+    - Documentation updates
+    
+    # Next Steps
+    
+    - Code review
+    - Testing phase
+    - Deployment planning
+<
+
+API Usage: ~                                                  *present-api*
+
+>lua
+    -- Basic usage
+    require("present").start_presentation()
+
+    -- From specific buffer
+    local bufnr = vim.fn.bufnr("presentation.md")
+    require("present").start_presentation({ bufnr = bufnr })
+
+    -- Setup (currently minimal)
+    require("present").setup()
+<
+
+==============================================================================
+10. TROUBLESHOOTING                                   *present-troubleshooting*
+
+Common Issues: ~                                             *present-issues*
+
+Presentation doesn't start: ~                              *present-startup-issues*
+- Ensure you're in a buffer with markdown content
+- Check that headers start with `#` at the beginning of lines
+- Verify the buffer contains parseable content
+
+Layout issues: ~                                           *present-layout-issues*
+- The plugin automatically adapts to screen size
+- Try resizing your terminal if layout seems off
+- VimResized autocmd handles dynamic resizing automatically
+
+Content not displaying correctly: ~                        *present-content-issues*
+- Verify markdown format with `#` headers separating slides
+- Check that content follows headers in expected order
+- Ensure headers use `#` at line start (not indented)
+
+Debug Information: ~                                         *present-debug*
+To check if slides are parsed correctly:
+
+>lua
+    -- Get parsed slides from current buffer
+    local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+    local slides = require("present")._parse_slides(lines)
+    print(vim.inspect(slides))
+<
+
+Window Management: ~                                        *present-cleanup*
+- Presentation windows are automatically cleaned up on exit
+- BufLeave autocmd handles restoration of vim options
+- Use `q` key to properly exit presentation mode
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:
