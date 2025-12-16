@@ -4,12 +4,12 @@ A minimalist presentation plugin for Neovim that transforms markdown files into 
 
 ## Features
 
-- 📝 **Markdown-based**: Write presentations in familiar markdown syntax
-- 🎨 **Minimalist design**: Clean, distraction-free floating windows
-- 🖥️ **Responsive layout**: Automatically adapts to different screen sizes
-- ⚡ **Lightweight**: Simple, focused functionality without bloat
-- 🔧 **Easy to use**: Single command to start presenting
-- 🧪 **Well-tested**: Comprehensive test suite with 28+ tests
+- **Markdown-based**: Write presentations in familiar markdown syntax
+- **Minimalist design**: Clean, distraction-free floating windows
+- **Responsive layout**: Automatically adapts to different screen sizes
+- **Lightweight**: Simple, focused functionality without bloat
+- **Easy to use**: Single command to start presenting
+- **Well-tested**: Comprehensive test suite with 28+ tests
 
 ## Installation
 
@@ -197,11 +197,6 @@ local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
 local slides = require("present")._parse_slides(lines)
 print(vim.inspect(slides))
 ```
-
-## License
-
-MIT License - see LICENSE file for details.
-
 ## Contributing
 
 Contributions are welcome! Please:
